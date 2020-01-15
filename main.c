@@ -1,28 +1,61 @@
 /* fgets3 -- использование функции fgets() */
 #include <stdio.h>
 #include <locale.h>
+#include <string.h>
+#include <stdlib.h>
 
-#define STLEN 10
+#define STLEN 128
+#define MAX 10
+
 
 int main(void) {
-    setlocale(LC_ALL, "Rus");
-    char words[STLEN];
+    char line[STLEN];
+    int index[MAX];
+    int lens[MAX];
     int i;
+    int k=0;
+    int q=0;
+    int reset=0;
+    char* parole[MAX];
 
-    puts("Введите строки (или пустую строку для выхода из программы):");
-    while (fgets(words, STLEN, stdin) != NULL
-           && words[0] != '\n') {
-        i = 0;
-        while (words[i] != '\n' && words[i] != '\0')
-            i++;
-        if (words[i] == '\n')
-            words[i] = '\0';
-        else  // требуется наличие words[i] == '\0'
-            while (getchar() != '\n')
-                continue;
-        puts(words);
+    for(i=0;i<sizeof(lens);i++){
+        lens[i]=0;
     }
-    puts("Готово.");
+
+    while (fgets(line, STLEN, stdin) != NULL && line[0] != '\n') {
+	for(i=0;i<STLEN;i++){
+		if(line[i]==' ' && reset == 0){ //spazi all'inizio
+			reset=0;
+			continue;
+		}
+		if((line[i]==' '||line[i]=='\n') && reset == 1){ //spazio dopo parola
+			reset=0;
+            k++;
+			continue;
+		}
+		if(line[i]=='\n'){ // fine riga
+			break;
+		}
+		if(reset!=0 && line[i]!=' '){ // durante la parola
+			lens[k]++;
+			continue;	
+		}
+		if(reset==0 && line[i]!=' '){ // inizio parola
+			index[k]=i;
+			lens[k]++;
+			reset=1;
+		}
+	}	
+
+        //puts(line);
+	printf("line:%s i:%d\n",line,i);
+    }
+    for(q=0;q<k;q++){
+        parole[q]=malloc(lens[q]+1);
+        memcpy(parole[q],&line[index[q]],lens[q]);
+	    printf("parola trovata in posizione %d lunga %d parola:%s\n",index[q],lens[q],parole[q]);
+	    //printf("parola trovata in posizione %d lunga %d\n",index[q],lens[q]);
+    }
     return 0;
 }
 
