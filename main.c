@@ -55,22 +55,12 @@ char* trovaparole(FILE* file, char*** parole,int* trovate){
 	}	
 	//printf("line:%s i:%d\n",line,i);
     for(q=0;q<k;q++){
-        //printf("pippo\n");
         parole[q]=malloc(lens[q]+1);
         memcpy(parole[q],&line[index[q]],lens[q]);
 	    //printf("parola trovata in posizione %d lunga %d parola:%s\n",index[q],lens[q],parole[q]);
-        //free(parole[q]);
     }
     reset=0;
     *trovate=k;
-    k=0;
-    q=0;
-    for(i=0;i<sizeof(lens);i++){
-        lens[i]=0;
-    }
-    for(i=0;i<sizeof(index);i++){
-        index[i]=0;
-    }
     return result;
 }
 
@@ -80,11 +70,12 @@ void main(){
     int trovate=0;
     char* res;
     while(trovaparole(stdin,(char***) p,&trovate)!=NULL){
-        printf("trovate nella linea: %d\n",trovate);
-        int t;
-        for(t=0;t<trovate;t++){
-            printf("parola trovata:%s\n",p[t]);
-        }
+        //printf("trovate nella linea: %d\n",trovate);
+        //int t;
+        //for(t=0;t<trovate;t++){
+        //    printf("parola trovata:%s\n",p[t]);
+        //}
+        printf("src: %s dst: %s\n",p[0],p[1]);
     }
 }
 
